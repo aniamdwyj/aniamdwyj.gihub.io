@@ -3,9 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="wyj的个人网站 - 欢迎来到我的个人空间">
-    <title>首页 - wyj的个人网站</title>
+    <meta name="description" content="关于wyj - 了解我的背景和经历">
+    <title>关于我 - wyj的个人网站</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* 与portfolio页面统一的卡片样式 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(139, 115, 85, 0.1);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .skill-card h3 {
+            color: #5d4e6d;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .skill-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .skill-list li {
+            color: #6b5b73;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.1);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+
+        .skill-list li::before {
+            content: "▸";
+            color: #8b7355;
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(139, 115, 85, 0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            color: #5d4e6d;
+            font-size: 1.8rem;
+            font-weight: 300;
+        }
+
+        .intro-text {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .philosophy-card {
+            background: rgba(139, 115, 85, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px solid rgba(139, 115, 85, 0.1);
+        }
+
+        .philosophy-card h3 {
+            color: #5d4e6d;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .philosophy-card p {
+            color: #6b5b73;
+            font-style: italic;
+            margin: 0.5rem 0;
+        }
+
+        /* 教育背景时间轴样式 */
+        .education-timeline {
+            margin: 2rem 0;
+        }
+
+        .timeline-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(139, 115, 85, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #8b7355, #5d4e6d);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .timeline-icon {
+            font-size: 2rem;
+            background: rgba(139, 115, 85, 0.1);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h3 {
+            color: #5d4e6d;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .timeline-period {
+            color: #8b7355;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: #6b5b73;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .timeline-tag {
+            background: rgba(139, 115, 85, 0.1);
+            color: #8b7355;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -20,9 +210,59 @@
     </header>
 
     <main>
-        <h1>欢迎来到我的个人网站</h1>
-        <p>你好！我是wyj，很高兴在这里与你相遇。</p>
-        <p>这个网站是我展示自己的窗口，你可以在这里了解我、查看我的作品，或者与我取得联系。</p>
+        <h1>关于我</h1>
+        
+        <div class="intro-text">
+            <p>你好！我是wyj，一名热爱技术和创新的学生。</p>
+            <p>目前专注于计算机科学领域的学习和实践，对web开发、人工智能和创意设计都有浓厚的兴趣。</p>
+        </div>
+
+        <div class="education-timeline">
+            <div class="timeline-card">
+                <div class="timeline-icon">🎓</div>
+                <div class="timeline-content">
+                    <h3>本科在读 · 计算机科学与技术</h3>
+                    <p class="timeline-period">2023 - 至今</p>
+                    <p class="timeline-description">
+                        专注于计算机科学核心课程，持续探索Web开发、人工智能等前沿技术方向。
+                    </p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">专业课程</span>
+                        <span class="timeline-tag">实践项目</span>
+                        <span class="timeline-tag">技术探索</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">技能与兴趣</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <h3>技术技能</h3>
+                <ul class="skill-list">
+                    <li>Web开发 (HTML, CSS, JavaScript)</li>
+                    <li>编程语言 (Python, Java, C++)</li>
+                    <li>数据库 (MySQL, MongoDB)</li>
+                    <li>版本控制 (Git)</li>
+                </ul>
+            </div>
+
+            <div class="skill-card">
+                <h3>兴趣爱好</h3>
+                <ul class="skill-list">
+                    <li>编程和软件开发</li>
+                    <li>阅读技术书籍和博客</li>
+                    <li>摄影和视觉设计</li>
+                    <li>音乐欣赏</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="philosophy-card">
+            <h3>个人理念</h3>
+            <p>我相信技术的力量可以改变世界，让人们的生活更美好。</p>
+            <p>持续学习、勇于创新是我一直坚持的信念。</p>
+        </div>
     </main>
 
     <footer>
