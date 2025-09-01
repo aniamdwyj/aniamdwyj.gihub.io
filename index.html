@@ -338,13 +338,101 @@
                 ];
                 this.userInput = [];
                 this.isActivated = false;
+                this.touchSequence = [];
+                this.touchPattern = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'tap', 'tap'];
+                this.lastTouchTime = 0;
+                this.touchTimeout = null;
+                
                 this.initKeyListener();
+                this.initTouchListener();
             }
 
             initKeyListener() {
                 document.addEventListener('keydown', (event) => {
                     this.handleKeyPress(event);
                 });
+            }
+
+            initTouchListener() {
+                let startX, startY;
+                
+                document.addEventListener('touchstart', (event) => {
+                    if (event.touches.length === 1) {
+                        startX = event.touches[0].clientX;
+                        startY = event.touches[0].clientY;
+                        this.lastTouchTime = Date.now();
+                    }
+                }, { passive: true });
+
+                document.addEventListener('touchend', (event) => {
+                    if (event.changedTouches.length === 1) {
+                        const endX = event.changedTouches[0].clientX;
+                        const endY = event.changedTouches[0].clientY;
+                        const deltaX = endX - startX;
+                        const deltaY = endY - startY;
+                        const minSwipeDistance = 30;
+                        
+                        let direction = null;
+                        
+                        // 检测滑动方向
+                        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                            // 水平滑动
+                            if (Math.abs(deltaX) > minSwipeDistance) {
+                                direction = deltaX > 0 ? 'right' : 'left';
+                            }
+                        } else {
+                            // 垂直滑动
+                            if (Math.abs(deltaY) > minSwipeDistance) {
+                                direction = deltaY > 0 ? 'down' : 'up';
+                            }
+                        }
+                        
+                        // 如果没有滑动，认为是点击
+                        if (!direction && Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) {
+                            direction = 'tap';
+                        }
+                        
+                        if (direction) {
+                            this.handleTouchInput(direction);
+                        }
+                    }
+                }, { passive: true });
+            }
+
+            handleTouchInput(direction) {
+                // 清除之前的超时
+                if (this.touchTimeout) {
+                    clearTimeout(this.touchTimeout);
+                }
+                
+                this.touchSequence.push(direction);
+                
+                // 保持序列长度
+                if (this.touchSequence.length > this.touchPattern.length) {
+                    this.touchSequence.shift();
+                }
+                
+                // 检查是否匹配
+                if (this.touchSequence.length === this.touchPattern.length) {
+                    if (this.checkTouchPattern()) {
+                        this.activateEasterEgg();
+                        return;
+                    }
+                }
+                
+                // 设置重置超时（3秒无操作重置）
+                this.touchTimeout = setTimeout(() => {
+                    this.touchSequence = [];
+                }, 3000);
+            }
+
+            checkTouchPattern() {
+                for (let i = 0; i < this.touchPattern.length; i++) {
+                    if (this.touchSequence[i] !== this.touchPattern[i]) {
+                        return false;
+                    }
+                }
+                return true;
             }
 
             handleKeyPress(event) {
@@ -430,6 +518,9 @@
                         🎮 KONAMI CODE ACTIVATED! 🎮<br>
                         <span style="font-size: 1rem; margin-top: 0.5rem; display: block;">
                             Welcome to the 8-bit world!
+                        </span>
+                        <span style="font-size: 0.8rem; margin-top: 0.5rem; display: block; color: #f0e6d9;">
+                            ${this.touchSequence.length > 0 ? '📱 触屏激活成功！' : '⌨️ 键盘激活成功！'}
                         </span>
                         <div style="margin-top: 1.5rem;">
                             <a href="snake-game.html" style="
