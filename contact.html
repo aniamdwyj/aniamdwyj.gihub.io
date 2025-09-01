@@ -16,6 +16,9 @@
                 <li><a href="portfolio.html">作品/爱好</a></li>
                 <li><a href="contact.html">联系方式</a></li>
             </ul>
+            <button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+                <span class="theme-icon">☀️</span>
+            </button>
         </nav>
     </header>
 
@@ -38,5 +41,184 @@
     <footer>
         <p>&copy; 2025 wyj</p>
     </footer>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.querySelector('#theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        const body = document.body;
+
+        // 检查本地存储的主题偏好，默认为浅色主题
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // 确保默认状态是浅色主题
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeIcon.textContent = '🌙';
+        } else {
+            // 明确设置浅色主题状态
+            body.classList.remove('dark-theme');
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+
+        // 科纳米秘籍管理器（精简版）
+        class KonamiCodeManager {
+            constructor() {
+                this.konamiCode = [
+                    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+                    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+                    'KeyB', 'KeyA'
+                ];
+                this.userInput = [];
+                this.isActivated = false;
+                this.initKeyListener();
+            }
+
+            initKeyListener() {
+                document.addEventListener('keydown', (event) => {
+                    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+                        return;
+                    }
+
+                    const key = event.code;
+                    if (this.konamiCode.includes(key)) {
+                        this.userInput.push(key);
+                        if (this.userInput.length > this.konamiCode.length) {
+                            this.userInput.shift();
+                        }
+                        if (this.userInput.length === this.konamiCode.length && this.checkKonamiCode()) {
+                            this.activateEasterEgg();
+                        }
+                    } else {
+                        this.userInput = [];
+                    }
+                });
+            }
+
+            checkKonamiCode() {
+                for (let i = 0; i < this.konamiCode.length; i++) {
+                    if (this.userInput[i] !== this.konamiCode[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            activateEasterEgg() {
+                if (this.isActivated) return;
+                this.isActivated = true;
+                
+                // 保存游戏模式状态到localStorage
+                localStorage.setItem('retroMode', 'active');
+                
+                this.showActivationMessage();
+                setTimeout(() => {
+                    document.body.classList.add('retro-8bit-theme');
+                    this.addRetroElements();
+                }, 1000);
+                this.playRetroSound();
+            }
+
+            showActivationMessage() {
+                const message = document.createElement('div');
+                message.innerHTML = `
+                    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                                background: linear-gradient(45deg, #ff6b6b, #4ecdc4); color: white; padding: 2rem; 
+                                border-radius: 10px; font-family: 'Courier New', monospace; font-size: 1.5rem; 
+                                font-weight: bold; text-align: center; z-index: 10000; 
+                                box-shadow: 0 0 30px rgba(255, 107, 107, 0.5); animation: konami-bounce 0.6s ease-in-out;">
+                        🎮 KONAMI CODE ACTIVATED! 🎮<br>
+                        <span style="font-size: 1rem; margin-top: 0.5rem; display: block;">Contact Unlocked!</span>
+                    </div>`;
+                document.body.appendChild(message);
+                setTimeout(() => { if (message.parentNode) message.parentNode.removeChild(message); }, 3000);
+            }
+
+            addRetroElements() {
+                const retroBg = document.createElement('div');
+                retroBg.className = 'retro-background';
+                retroBg.innerHTML = '<div class="pixel-rain"></div><div class="retro-grid"></div>';
+                document.body.appendChild(retroBg);
+
+                const resetBtn = document.createElement('button');
+                resetBtn.innerHTML = '🎮 EXIT RETRO MODE';
+                resetBtn.className = 'retro-reset-btn';
+                resetBtn.addEventListener('click', () => this.deactivateEasterEgg());
+                document.body.appendChild(resetBtn);
+                
+                // 添加游戏入口按钮
+                const gameBtn = document.createElement('a');
+                gameBtn.href = 'snake-game.html';
+                gameBtn.innerHTML = '🐍 贪吃蛇游戏';
+                gameBtn.className = 'retro-game-btn';
+                document.body.appendChild(gameBtn);
+            }
+
+            deactivateEasterEgg() {
+                document.body.classList.remove('retro-8bit-theme');
+                
+                // 清除localStorage状态
+                localStorage.removeItem('retroMode');
+                
+                const retroBg = document.querySelector('.retro-background');
+                const resetBtn = document.querySelector('.retro-reset-btn');
+                const gameBtn = document.querySelector('.retro-game-btn');
+                if (retroBg) retroBg.remove();
+                if (resetBtn) resetBtn.remove();
+                if (gameBtn) gameBtn.remove();
+                this.isActivated = false;
+                this.userInput = [];
+            }
+
+            playRetroSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const frequencies = [262, 330, 392, 523];
+                    frequencies.forEach((freq, index) => {
+                        setTimeout(() => {
+                            const oscillator = audioContext.createOscillator();
+                            const gainNode = audioContext.createGain();
+                            oscillator.connect(gainNode);
+                            gainNode.connect(audioContext.destination);
+                            oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                            oscillator.type = 'square';
+                            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                            oscillator.start(audioContext.currentTime);
+                            oscillator.stop(audioContext.currentTime + 0.3);
+                        }, index * 100);
+                    });
+                } catch (error) {
+                    console.log('音频播放失败，但这不影响彩蛋效果:', error);
+                }
+            }
+        }
+
+        // 主题切换事件监听器
+        themeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // 初始化科纳米秘籍
+        const konamiManager = new KonamiCodeManager();
+        
+        // 检查是否应该保持游戏模式
+        if (localStorage.getItem('retroMode') === 'active') {
+            setTimeout(() => {
+                konamiManager.isActivated = true;
+                document.body.classList.add('retro-8bit-theme');
+                konamiManager.addRetroElements();
+            }, 100);
+        }
+    </script>
 </body>
 </html>
