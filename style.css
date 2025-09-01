@@ -1099,6 +1099,11 @@ header, nav a, .theme-toggle, h1, h2, p, section a, footer, .typewriter-text, .h
     box-shadow: 0 0 20px #00ff41 !important;
 }
 
+/* 隐藏复古模式下的主题切换按钮 */
+.retro-8bit-theme .theme-toggle {
+    display: none !important;
+}
+
 .retro-8bit-theme nav a {
     color: #00ff41 !important;
     text-shadow: 0 0 10px #00ff41 !important;
@@ -1138,19 +1143,28 @@ header, nav a, .theme-toggle, h1, h2, p, section a, footer, .typewriter-text, .h
 .retro-8bit-theme .skill-card,
 .retro-8bit-theme .project-card,
 .retro-8bit-theme .post-item {
-    background: rgba(0, 0, 0, 0.9) !important;
-    border: 2px solid #00ff41 !important;
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3) !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 20, 20, 0.9)) !important;
+    border: 2px solid #4ecdc4 !important;
+    box-shadow: 0 0 15px rgba(78, 205, 196, 0.2) !important;
     transition: all 0.3s ease !important;
+    border-radius: 8px !important;
 }
 
 .retro-8bit-theme .skill-card:hover,
 .retro-8bit-theme .project-card:hover,
 .retro-8bit-theme .post-item:hover {
     border-color: #ff6b6b !important;
-    box-shadow: 0 0 30px rgba(255, 107, 107, 0.5) !important;
-    transform: translateY(-5px) !important;
-    background: rgba(0, 0, 0, 0.95) !important;
+    box-shadow: 0 0 25px rgba(255, 107, 107, 0.4) !important;
+    transform: translateY(-3px) translateX(5px) !important;
+    background: linear-gradient(135deg, rgba(0, 10, 10, 0.9), rgba(20, 0, 10, 0.95)) !important;
+}
+
+/* 博客卡片激活状态 */
+.retro-8bit-theme .post-item.active {
+    border-color: #00ff41 !important;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.5) !important;
+    transform: translateX(8px) !important;
+    background: linear-gradient(135deg, rgba(0, 20, 0, 0.9), rgba(10, 30, 10, 0.95)) !important;
 }
 
 /* 卡片内文字优化 */
@@ -1158,12 +1172,13 @@ header, nav a, .theme-toggle, h1, h2, p, section a, footer, .typewriter-text, .h
 .retro-8bit-theme .skill-card h3,
 .retro-8bit-theme .post-item h3,
 .retro-8bit-theme .post-title {
-    color: #ff6b6b !important;
-    text-shadow: 1px 1px 0px #000, 0 0 15px #ff6b6b !important;
+    color: #00ff41 !important;
+    text-shadow: 1px 1px 0px #000, 0 0 12px #00ff41 !important;
     background: transparent !important;
     border: none !important;
     padding: 0.3rem 0 !important;
     margin-bottom: 0.5rem !important;
+    font-weight: bold !important;
 }
 
 .retro-8bit-theme .project-card p,
@@ -1171,10 +1186,11 @@ header, nav a, .theme-toggle, h1, h2, p, section a, footer, .typewriter-text, .h
 .retro-8bit-theme .post-item p,
 .retro-8bit-theme .project-description,
 .retro-8bit-theme .post-date {
-    color: #e0e0e0 !important;
+    color: #4ecdc4 !important;
     background: transparent !important;
     text-shadow: 1px 1px 0px #000 !important;
     line-height: 1.4 !important;
+    font-size: 0.9rem !important;
 }
 
 .retro-8bit-theme .project-language,
@@ -1249,9 +1265,19 @@ header, nav a, .theme-toggle, h1, h2, p, section a, footer, .typewriter-text, .h
 
 /* 复古主题下的博客区域 */
 .retro-8bit-theme .blog-container {
-    background: rgba(0, 0, 0, 0.9) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
     border: 2px solid #00ff41 !important;
     box-shadow: 0 0 30px rgba(0, 255, 65, 0.3) !important;
+    border-radius: 10px !important;
+}
+
+/* 复古主题下的博客侧边栏 */
+.retro-8bit-theme .blog-sidebar {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border: 2px solid #4ecdc4 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.4) !important;
+    backdrop-filter: blur(5px) !important;
 }
 
 /* 博客文章内容优化 */
@@ -1341,7 +1367,7 @@ header, nav a, .theme-toggle, h1, h2, p, section a, footer, .typewriter-text, .h
 .retro-reset-btn {
     position: fixed !important;
     top: 20px !important;
-    right: 20px !important;
+    left: 10px !important;
     z-index: 10001 !important;
     background: linear-gradient(45deg, #ff6b6b, #4ecdc4) !important;
     color: white !important;
@@ -1551,4 +1577,143 @@ header, nav a, .theme-toggle, h1, h2, p, section a, footer, .typewriter-text, .h
         padding: 0.5rem 0.6rem !important;
         font-size: 0.7rem !important;
     }
+}
+
+/* 复古主题下关于页面的样式优化 */
+/* 信息卡片和技能卡片 */
+.retro-8bit-theme .info-card,
+.retro-8bit-theme .philosophy-card,
+.retro-8bit-theme .skills-bars-section,
+.retro-8bit-theme .radar-chart-section {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border: 2px solid #4ecdc4 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.3) !important;
+}
+
+/* 技能条区域优化 */
+.retro-8bit-theme .skills-subtitle {
+    color: #ff6b6b !important;
+    text-shadow: 1px 1px 0px #000, 0 0 15px #ff6b6b !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 5px !important;
+    border: 1px solid #ff6b6b !important;
+    display: inline-block !important;
+}
+
+/* 兴趣爱好卡片 */
+.retro-8bit-theme .interest-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 15, 20, 0.9)) !important;
+    border: 2px solid #4ecdc4 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 15px rgba(78, 205, 196, 0.2) !important;
+}
+
+.retro-8bit-theme .interest-card:hover {
+    border-color: #ff6b6b !important;
+    box-shadow: 0 0 25px rgba(255, 107, 107, 0.4) !important;
+    transform: translateY(-3px) !important;
+    background: linear-gradient(135deg, rgba(0, 10, 0, 0.9), rgba(20, 0, 10, 0.95)) !important;
+}
+
+.retro-8bit-theme .interest-card h3 {
+    color: #00ff41 !important;
+    text-shadow: 1px 1px 0px #000, 0 0 10px #00ff41 !important;
+}
+
+.retro-8bit-theme .interest-card p {
+    color: #4ecdc4 !important;
+    text-shadow: 1px 1px 0px #000 !important;
+}
+
+/* 时间线样式 */
+.retro-8bit-theme .timeline-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 20, 0, 0.9)) !important;
+    border: 2px solid #00ff41 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3) !important;
+}
+
+.retro-8bit-theme .timeline-card::before {
+    background: linear-gradient(90deg, #00ff41, #4ecdc4, #ff6b6b) !important;
+    height: 4px !important;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.6) !important;
+}
+
+.retro-8bit-theme .timeline-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.5) !important;
+    border-color: #4ecdc4 !important;
+}
+
+.retro-8bit-theme .timeline-icon {
+    background: rgba(0, 255, 65, 0.2) !important;
+    border: 2px solid #00ff41 !important;
+    color: #00ff41 !important;
+    font-size: 2.2rem !important;
+    text-shadow: 0 0 10px #00ff41 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.4) !important;
+}
+
+.retro-8bit-theme .timeline-content h3 {
+    color: #ff6b6b !important;
+    text-shadow: 1px 1px 0px #000, 0 0 15px #ff6b6b !important;
+    font-family: 'Courier New', monospace !important;
+    font-weight: bold !important;
+    font-size: 1.3rem !important;
+}
+
+.retro-8bit-theme .timeline-period {
+    color: #4ecdc4 !important;
+    text-shadow: 1px 1px 0px #000, 0 0 10px #4ecdc4 !important;
+    font-family: 'Courier New', monospace !important;
+    font-weight: bold !important;
+    background: rgba(78, 205, 196, 0.1) !important;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 5px !important;
+    border: 1px solid #4ecdc4 !important;
+    display: inline-block !important;
+}
+
+.retro-8bit-theme .timeline-description {
+    color: #e0e0e0 !important;
+    text-shadow: 1px 1px 0px #000 !important;
+    font-family: 'Courier New', monospace !important;
+    line-height: 1.6 !important;
+}
+
+.retro-8bit-theme .timeline-tag {
+    background: linear-gradient(45deg, rgba(0, 255, 65, 0.2), rgba(78, 205, 196, 0.2)) !important;
+    color: #00ff41 !important;
+    border: 1px solid #00ff41 !important;
+    text-shadow: 1px 1px 0px #000 !important;
+    font-family: 'Courier New', monospace !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.3) !important;
+}
+
+.retro-8bit-theme .timeline-tag:hover {
+    background: linear-gradient(45deg, rgba(78, 205, 196, 0.3), rgba(255, 107, 107, 0.2)) !important;
+    border-color: #4ecdc4 !important;
+    color: #4ecdc4 !important;
+    box-shadow: 0 0 12px rgba(78, 205, 196, 0.5) !important;
+}
+
+/* 教育时间线特殊样式 */
+.retro-8bit-theme .education-timeline {
+    position: relative !important;
+}
+
+.retro-8bit-theme .education-timeline::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 30px !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 2px !important;
+    background: linear-gradient(180deg, #00ff41, #4ecdc4) !important;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.6) !important;
+    z-index: -1 !important;
 }

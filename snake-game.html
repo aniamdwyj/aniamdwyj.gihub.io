@@ -17,6 +17,11 @@
             overflow-y: auto;   /* 允许纵向滚动 */
         }
 
+        /* 隐藏主题切换按钮 */
+        .game-page .theme-toggle {
+            display: none !important;
+        }
+
         .game-container {
             display: flex;
             flex-direction: column;
@@ -194,7 +199,7 @@
         .back-to-site {
             position: fixed;
             top: 20px;
-            left: 20px;
+            left: 10px;
             background: rgba(0, 0, 0, 0.8);
             color: #4ecdc4;
             border: 2px solid #4ecdc4;
@@ -283,7 +288,7 @@
             
             .back-to-site {
                 top: 10px;
-                left: 10px;
+                left: 5px;
                 padding: 0.6rem 0.8rem;
                 font-size: 0.9rem;
             }

@@ -728,27 +728,63 @@
                 if (!this.chart) return;
                 
                 const isDarkTheme = document.body.classList.contains('dark-theme');
+                const isRetroTheme = document.body.classList.contains('retro-8bit-theme');
                 
                 try {
                     // 更新数据集颜色
-                    if (isDarkTheme) {
+                    if (isRetroTheme) {
+                        // 复古模式配色
+                        this.chart.data.datasets[0].backgroundColor = 'rgba(0, 255, 65, 0.15)';
+                        this.chart.data.datasets[0].borderColor = '#00ff41';
+                        this.chart.data.datasets[0].pointBackgroundColor = '#00ff41';
+                        this.chart.data.datasets[0].pointBorderColor = '#000';
+                        this.chart.data.datasets[0].borderWidth = 3;
+                        this.chart.data.datasets[0].pointRadius = 8;
+                        this.chart.data.datasets[0].pointHoverRadius = 10;
+                        
+                        this.chart.options.scales.r.ticks.color = '#4ecdc4';
+                        this.chart.options.scales.r.grid.color = 'rgba(78, 205, 196, 0.4)';
+                        this.chart.options.scales.r.angleLines.color = 'rgba(78, 205, 196, 0.4)';
+                        this.chart.options.scales.r.pointLabels.color = '#ff6b6b';
+                        this.chart.options.scales.r.pointLabels.font = {
+                            size: 14,
+                            weight: 'bold',
+                            family: "'Courier New', monospace"
+                        };
+                    } else if (isDarkTheme) {
+                        // 深色主题配色
                         this.chart.data.datasets[0].backgroundColor = 'rgba(240, 230, 217, 0.2)';
                         this.chart.data.datasets[0].borderColor = 'rgba(240, 230, 217, 1)';
                         this.chart.data.datasets[0].pointBackgroundColor = 'rgba(240, 230, 217, 1)';
+                        this.chart.data.datasets[0].pointBorderColor = '#fff';
+                        this.chart.data.datasets[0].borderWidth = 2;
+                        this.chart.data.datasets[0].pointRadius = 6;
+                        this.chart.data.datasets[0].pointHoverRadius = 8;
                         
                         this.chart.options.scales.r.ticks.color = '#d4c5b9';
                         this.chart.options.scales.r.grid.color = 'rgba(240, 230, 217, 0.3)';
                         this.chart.options.scales.r.angleLines.color = 'rgba(240, 230, 217, 0.3)';
                         this.chart.options.scales.r.pointLabels.color = '#f0e6d9';
+                        this.chart.options.scales.r.pointLabels.font = {
+                            size: 12
+                        };
                     } else {
+                        // 浅色主题配色
                         this.chart.data.datasets[0].backgroundColor = 'rgba(139, 115, 85, 0.2)';
                         this.chart.data.datasets[0].borderColor = 'rgba(139, 115, 85, 1)';
                         this.chart.data.datasets[0].pointBackgroundColor = 'rgba(139, 115, 85, 1)';
+                        this.chart.data.datasets[0].pointBorderColor = '#fff';
+                        this.chart.data.datasets[0].borderWidth = 2;
+                        this.chart.data.datasets[0].pointRadius = 6;
+                        this.chart.data.datasets[0].pointHoverRadius = 8;
                         
                         this.chart.options.scales.r.ticks.color = '#6b5b73';
                         this.chart.options.scales.r.grid.color = 'rgba(139, 115, 85, 0.3)';
                         this.chart.options.scales.r.angleLines.color = 'rgba(139, 115, 85, 0.3)';
                         this.chart.options.scales.r.pointLabels.color = '#5d4e6d';
+                        this.chart.options.scales.r.pointLabels.font = {
+                            size: 12
+                        };
                     }
                     
                     this.chart.update('none'); // 不播放动画的更新
@@ -890,6 +926,11 @@
                 setTimeout(() => {
                     document.body.classList.add('retro-8bit-theme');
                     this.addRetroElements();
+                    
+                    // 更新雷达图主题
+                    if (window.radarChartManager) {
+                        window.radarChartManager.updateChartTheme();
+                    }
                 }, 1000);
                 this.playRetroSound();
             }
@@ -943,6 +984,11 @@
                 if (gameBtn) gameBtn.remove();
                 this.isActivated = false;
                 this.userInput = [];
+                
+                // 更新雷达图主题
+                if (window.radarChartManager) {
+                    window.radarChartManager.updateChartTheme();
+                }
             }
 
             playRetroSound() {
@@ -969,6 +1015,69 @@
             }
         }
 
+        // 雷达图备用显示函数
+        function showRadarChartFallback() {
+            const container = document.querySelector('.radar-chart-container');
+            if (container) {
+                const isRetroTheme = document.body.classList.contains('retro-8bit-theme');
+                
+                const skillCardStyle = isRetroTheme ? 
+                    "background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 15, 20, 0.9)); padding: 1rem; border-radius: 8px; border: 2px solid #4ecdc4; box-shadow: 0 0 10px rgba(78, 205, 196, 0.2);" :
+                    "background: rgba(139, 115, 85, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(139, 115, 85, 0.2);";
+                
+                const titleStyle = isRetroTheme ?
+                    "font-weight: bold; color: #00ff41; margin-bottom: 0.5rem; text-shadow: 1px 1px 0px #000, 0 0 8px #00ff41; font-family: 'Courier New', monospace;" :
+                    "font-weight: bold; color: #5d4e6d; margin-bottom: 0.5rem;";
+                
+                const valueStyle = isRetroTheme ?
+                    "color: #4ecdc4; text-shadow: 1px 1px 0px #000; font-family: 'Courier New', monospace; font-weight: bold;" :
+                    "color: #8b7355;";
+                
+                const mainTitleStyle = isRetroTheme ?
+                    "color: #ff6b6b; margin-bottom: 1rem; text-shadow: 1px 1px 0px #000, 0 0 15px #ff6b6b; font-family: 'Courier New', monospace;" :
+                    "color: #5d4e6d; margin-bottom: 1rem;";
+                
+                const descStyle = isRetroTheme ?
+                    "color: #e0e0e0; margin-top: 1rem; font-size: 0.9rem; text-shadow: 1px 1px 0px #000; font-family: 'Courier New', monospace;" :
+                    "color: #6b5b73; margin-top: 1rem; font-size: 0.9rem;";
+                
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <h4 style="${mainTitleStyle}">技能水平展示</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; max-width: 400px; margin: 0 auto;">
+                            <div style="${skillCardStyle}">
+                                <div style="${titleStyle}">前端开发</div>
+                                <div style="${valueStyle}">90%</div>
+                            </div>
+                            <div style="${skillCardStyle}">
+                                <div style="${titleStyle}">后端开发</div>
+                                <div style="${valueStyle}">65%</div>
+                            </div>
+                            <div style="${skillCardStyle}">
+                                <div style="${titleStyle}">数据库</div>
+                                <div style="${valueStyle}">60%</div>
+                            </div>
+                            <div style="${skillCardStyle}">
+                                <div style="${titleStyle}">设计能力</div>
+                                <div style="${valueStyle}">70%</div>
+                            </div>
+                            <div style="${skillCardStyle}">
+                                <div style="${titleStyle}">项目管理</div>
+                                <div style="${valueStyle}">75%</div>
+                            </div>
+                            <div style="${skillCardStyle}">
+                                <div style="${titleStyle}">学习能力</div>
+                                <div style="${valueStyle}">95%</div>
+                            </div>
+                        </div>
+                        <p style="${descStyle}">
+                            ${isRetroTheme ? '📊 数据传输完成，雷达系统离线' : '雷达图加载中，暂时以表格形式展示'}
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
         // 初始化功能
         document.addEventListener('DOMContentLoaded', function() {
             // 初始化技能条动画
@@ -983,53 +1092,77 @@
                     konamiManager.isActivated = true;
                     document.body.classList.add('retro-8bit-theme');
                     konamiManager.addRetroElements();
+                    
+                    // 更新雷达图主题（需要延迟确保雷达图已初始化）
+                    setTimeout(() => {
+                        if (window.radarChartManager) {
+                            window.radarChartManager.updateChartTheme();
+                        }
+                    }, 500);
                 }, 100);
             }
             
-            // 延迟初始化雷达图，确保Chart.js完全加载
-            setTimeout(() => {
+            // 雷达图初始化重试函数
+            function initRadarChartWithRetry(retryCount = 0) {
+                const maxRetries = 3;
+                const retryDelay = 1000; // 1秒
+                
                 try {
-                    console.log('尝试初始化雷达图...');
-                    const radarChart = new RadarChartManager();
+                    console.log(`尝试初始化雷达图... (尝试 ${retryCount + 1}/${maxRetries + 1})`);
+                    
+                    // 检查Chart.js是否加载成功
+                    if (typeof Chart === 'undefined') {
+                        if (retryCount < maxRetries) {
+                            console.log(`Chart.js 未加载，${retryDelay}ms后重试...`);
+                            setTimeout(() => initRadarChartWithRetry(retryCount + 1), retryDelay);
+                            return;
+                        } else {
+                            console.error('Chart.js 最终加载失败，使用备用方案');
+                            showRadarChartFallback();
+                            return;
+                        }
+                    }
+                    
+                    window.radarChartManager = new RadarChartManager();
                     
                     // 监听主题变化，更新雷达图
                     const themeToggleBtn = document.getElementById('theme-toggle');
                     if (themeToggleBtn) {
                         themeToggleBtn.addEventListener('click', function() {
                             setTimeout(() => {
-                                radarChart.updateChartTheme();
+                                if (window.radarChartManager) {
+                                    window.radarChartManager.updateChartTheme();
+                                }
                             }, 100);
                         });
                     }
                     
                     // 将radarChart存储到全局，方便调试和手动重试
-                    window.radarChart = radarChart;
+                    window.radarChart = window.radarChartManager;
                     
                     // 添加手动重试按钮
                     window.retryRadarChart = function() {
                         console.log('手动重试初始化雷达图...');
-                        new RadarChartManager();
+                        initRadarChartWithRetry();
                     };
                     
                 } catch (error) {
                     console.error('雷达图初始化异常:', error);
                     
-                    // 显示备用内容
-                    const container = document.querySelector('.radar-chart-container');
-                    if (container) {
-                        container.innerHTML = `
-                            <div style="text-align: center; padding: 3rem;">
-                                <h4 style="color: #5d4e6d; margin-bottom: 1rem;">雷达图暂时无法显示</h4>
-                                <p style="color: #6b5b73; margin-bottom: 1rem;">正在尝试加载图表库...</p>
-                                <button onclick="window.retryRadarChart()" 
-                                        style="background: #8b7355; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;">
-                                    重试加载
-                                </button>
-                            </div>
-                        `;
+                    if (retryCount < maxRetries) {
+                        console.log(`初始化失败，${retryDelay}ms后重试...`);
+                        setTimeout(() => initRadarChartWithRetry(retryCount + 1), retryDelay);
+                    } else {
+                        console.error('雷达图最终初始化失败，使用备用方案');
+                        showRadarChartFallback();
                     }
                 }
-            }, 1000);
+            }
+            
+            // 开始初始化雷达图（延迟确保DOM和Chart.js完全加载）
+            setTimeout(() => {
+                initRadarChartWithRetry();
+            }, 2000);
         });
     </script>
 </body>
