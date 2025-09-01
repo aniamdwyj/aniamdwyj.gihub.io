@@ -6,6 +6,8 @@
     <meta name="description" content="关于wyj - 了解我的背景和经历">
     <title>关于我 - wyj的个人网站</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for radar chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <style>
         /* 与portfolio页面统一的卡片样式 */
         .skills-grid {
@@ -195,6 +197,191 @@
                 gap: 1rem;
             }
         }
+
+        /* 深色主题支持 */
+        body.dark-theme .skill-card,
+        body.dark-theme .timeline-card {
+            background: rgba(18, 18, 18, 0.8);
+            border-color: rgba(240, 230, 217, 0.2);
+            color: #e8e6e3;
+        }
+
+        body.dark-theme .skill-card h3,
+        body.dark-theme .timeline-content h3,
+        body.dark-theme .section-title {
+            color: #f0e6d9;
+        }
+
+        body.dark-theme .skill-list li,
+        body.dark-theme .timeline-description {
+            color: #d4c5b9;
+        }
+
+        body.dark-theme .skill-list li::before {
+            color: #f0e6d9;
+        }
+
+        body.dark-theme .info-card,
+        body.dark-theme .philosophy-card {
+            background: rgba(18, 18, 18, 0.7);
+            border-color: rgba(240, 230, 217, 0.2);
+        }
+
+        body.dark-theme .philosophy-card h3 {
+            color: #f0e6d9;
+        }
+
+        body.dark-theme .philosophy-card p {
+            color: #d4c5b9;
+        }
+
+        body.dark-theme .timeline-period {
+            color: #f0e6d9;
+        }
+
+        body.dark-theme .timeline-tag {
+            background: rgba(240, 230, 217, 0.2);
+            color: #f0e6d9;
+        }
+
+        body.dark-theme .timeline-icon {
+            background: rgba(240, 230, 217, 0.2);
+        }
+
+        /* 动态技能条样式 */
+        .skills-bars-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(139, 115, 85, 0.1);
+        }
+
+        .skills-subtitle {
+            color: #5d4e6d;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .skills-bars {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .skill-bar-item {
+            margin-bottom: 2rem;
+        }
+
+        .skill-bar-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            color: #5d4e6d;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .skill-percentage {
+            color: #8b7355;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .skill-bar-track {
+            width: 100%;
+            height: 12px;
+            background: rgba(139, 115, 85, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b7355, #5d4e6d);
+            border-radius: 6px;
+            width: 0%;
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s ease-in-out;
+        }
+
+        .skill-bar-fill.animate::after {
+            animation: shimmer 2s ease-in-out;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* 雷达图区域样式 */
+        .radar-chart-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(139, 115, 85, 0.1);
+        }
+
+        .radar-chart-container {
+            max-width: 500px;
+            height: 400px;
+            margin: 0 auto;
+            position: relative;
+            padding: 1rem;
+        }
+
+        #skillsRadarChart {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* 深色主题技能条样式 */
+        body.dark-theme .skills-bars-section,
+        body.dark-theme .radar-chart-section {
+            background: rgba(18, 18, 18, 0.8);
+            border-color: rgba(240, 230, 217, 0.2);
+        }
+
+        body.dark-theme .skills-subtitle {
+            color: #f0e6d9;
+        }
+
+        body.dark-theme .skill-name {
+            color: #f0e6d9;
+        }
+
+        body.dark-theme .skill-percentage {
+            color: #f0e6d9;
+        }
+
+        body.dark-theme .skill-bar-track {
+            background: rgba(240, 230, 217, 0.1);
+        }
+
+        body.dark-theme .skill-bar-fill {
+            background: linear-gradient(90deg, #f0e6d9, #d4c5b9);
+        }
     </style>
 </head>
 <body>
@@ -206,6 +393,9 @@
                 <li><a href="portfolio.html">作品/爱好</a></li>
                 <li><a href="contact.html">联系方式</a></li>
             </ul>
+            <button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+                <span class="theme-icon">☀️</span>
+            </button>
         </nav>
     </header>
 
@@ -236,17 +426,83 @@
         </div>
 
         <h2 class="section-title">技能与兴趣</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <h3>技术技能</h3>
-                <ul class="skill-list">
-                    <li>Web开发 (HTML, CSS, JavaScript)</li>
-                    <li>编程语言 (Python, Java, C++)</li>
-                    <li>数据库 (MySQL, MongoDB)</li>
-                    <li>版本控制 (Git)</li>
-                </ul>
+        
+        <!-- 动态技能条区域 -->
+        <div class="skills-bars-section" id="skills-bars-section">
+            <h3 class="skills-subtitle">技术技能</h3>
+            <div class="skills-bars">
+                <div class="skill-bar-item" data-skill="JavaScript" data-level="85">
+                    <div class="skill-bar-label">
+                        <span class="skill-name">JavaScript</span>
+                        <span class="skill-percentage">85%</span>
+                    </div>
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill" data-width="85"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-bar-item" data-skill="HTML/CSS" data-level="90">
+                    <div class="skill-bar-label">
+                        <span class="skill-name">HTML/CSS</span>
+                        <span class="skill-percentage">90%</span>
+                    </div>
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill" data-width="90"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-bar-item" data-skill="Python" data-level="75">
+                    <div class="skill-bar-label">
+                        <span class="skill-name">Python</span>
+                        <span class="skill-percentage">75%</span>
+                    </div>
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill" data-width="75"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-bar-item" data-skill="Vue.js" data-level="70">
+                    <div class="skill-bar-label">
+                        <span class="skill-name">Vue.js</span>
+                        <span class="skill-percentage">70%</span>
+                    </div>
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill" data-width="70"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-bar-item" data-skill="Node.js" data-level="65">
+                    <div class="skill-bar-label">
+                        <span class="skill-name">Node.js</span>
+                        <span class="skill-percentage">65%</span>
+                    </div>
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill" data-width="65"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-bar-item" data-skill="数据库" data-level="60">
+                    <div class="skill-bar-label">
+                        <span class="skill-name">数据库 (MySQL/MongoDB)</span>
+                        <span class="skill-percentage">60%</span>
+                    </div>
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill" data-width="60"></div>
+                    </div>
+                </div>
             </div>
+        </div>
 
+        <!-- 雷达图区域 -->
+        <div class="radar-chart-section">
+            <h3 class="skills-subtitle">综合能力雷达图</h3>
+            <div class="radar-chart-container">
+                <canvas id="skillsRadarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 原有的兴趣爱好区域 -->
+        <div class="skills-grid">
             <div class="skill-card">
                 <h3>兴趣爱好</h3>
                 <ul class="skill-list">
@@ -268,5 +524,435 @@
     <footer>
         <p>&copy; 2025 wyj</p>
     </footer>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.querySelector('#theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        const body = document.body;
+
+        // 检查本地存储的主题偏好，默认为浅色主题
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // 确保默认状态是浅色主题
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeIcon.textContent = '🌙';
+        } else {
+            // 明确设置浅色主题状态
+            body.classList.remove('dark-theme');
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+
+        // 主题切换事件监听器
+        themeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // 技能条动画管理类
+        class SkillBarAnimator {
+            constructor() {
+                this.hasAnimated = false;
+                this.initIntersectionObserver();
+            }
+
+            // 初始化Intersection Observer
+            initIntersectionObserver() {
+                const options = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.5 // 当50%的元素可见时触发
+                };
+
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !this.hasAnimated) {
+                            this.animateSkillBars();
+                            this.hasAnimated = true;
+                        }
+                    });
+                }, options);
+
+                // 开始观察技能条区域
+                const skillsSection = document.getElementById('skills-bars-section');
+                if (skillsSection) {
+                    this.observer.observe(skillsSection);
+                }
+            }
+
+            // 动画技能条
+            animateSkillBars() {
+                const skillBars = document.querySelectorAll('.skill-bar-fill');
+                
+                skillBars.forEach((bar, index) => {
+                    const targetWidth = bar.getAttribute('data-width');
+                    
+                    // 延迟动画，创建连锁效果
+                    setTimeout(() => {
+                        bar.style.width = targetWidth + '%';
+                        bar.classList.add('animate');
+                    }, index * 200);
+                });
+            }
+        }
+
+        // 雷达图管理类
+        class RadarChartManager {
+            constructor() {
+                this.chart = null;
+                this.initChart();
+            }
+
+            // 初始化雷达图
+            initChart() {
+                console.log('开始初始化雷达图...');
+                
+                const ctx = document.getElementById('skillsRadarChart');
+                if (!ctx) {
+                    console.error('Canvas element not found');
+                    return;
+                }
+                
+                console.log('Canvas元素找到，检查Chart.js...');
+                if (typeof Chart === 'undefined') {
+                    console.error('Chart.js 未加载');
+                    return;
+                }
+                
+                console.log('Chart.js已加载，版本:', Chart.version);
+
+                // 技能数据
+                const skillData = {
+                    labels: [
+                        '前端开发',
+                        '后端开发', 
+                        '数据库',
+                        '设计能力',
+                        '项目管理',
+                        '学习能力'
+                    ],
+                    datasets: [{
+                        label: '技能水平',
+                        data: [90, 65, 60, 70, 75, 95], // 对应各项技能的评分 (0-100)
+                        backgroundColor: 'rgba(139, 115, 85, 0.2)',
+                        borderColor: 'rgba(139, 115, 85, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(139, 115, 85, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                };
+
+                // Chart.js 3.x 兼容配置
+                const config = {
+                    type: 'radar',
+                    data: skillData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20,
+                                    display: true,
+                                    color: '#6b5b73'
+                                },
+                                grid: {
+                                    color: 'rgba(139, 115, 85, 0.3)'
+                                },
+                                angleLines: {
+                                    color: 'rgba(139, 115, 85, 0.3)'
+                                },
+                                pointLabels: {
+                                    color: '#5d4e6d',
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        },
+                        elements: {
+                            line: {
+                                borderWidth: 2
+                            },
+                            point: {
+                                radius: 4,
+                                hoverRadius: 6
+                            }
+                        }
+                    }
+                };
+
+                try {
+                    this.chart = new Chart(ctx, config);
+                    console.log('雷达图初始化成功');
+                    
+                    // 监听主题变化
+                    this.updateChartTheme();
+                } catch (error) {
+                    console.error('雷达图初始化失败:', error);
+                    
+                    // 显示错误信息
+                    const container = document.querySelector('.radar-chart-container');
+                    if (container) {
+                        container.innerHTML = `
+                            <div style="text-align: center; padding: 3rem; color: #d64545;">
+                                <h4>雷达图加载失败</h4>
+                                <p>请刷新页面重试</p>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            // 更新图表主题
+            updateChartTheme() {
+                if (!this.chart) return;
+                
+                const isDarkTheme = document.body.classList.contains('dark-theme');
+                
+                try {
+                    // 更新数据集颜色
+                    if (isDarkTheme) {
+                        this.chart.data.datasets[0].backgroundColor = 'rgba(240, 230, 217, 0.2)';
+                        this.chart.data.datasets[0].borderColor = 'rgba(240, 230, 217, 1)';
+                        this.chart.data.datasets[0].pointBackgroundColor = 'rgba(240, 230, 217, 1)';
+                        
+                        this.chart.options.scales.r.ticks.color = '#d4c5b9';
+                        this.chart.options.scales.r.grid.color = 'rgba(240, 230, 217, 0.3)';
+                        this.chart.options.scales.r.angleLines.color = 'rgba(240, 230, 217, 0.3)';
+                        this.chart.options.scales.r.pointLabels.color = '#f0e6d9';
+                    } else {
+                        this.chart.data.datasets[0].backgroundColor = 'rgba(139, 115, 85, 0.2)';
+                        this.chart.data.datasets[0].borderColor = 'rgba(139, 115, 85, 1)';
+                        this.chart.data.datasets[0].pointBackgroundColor = 'rgba(139, 115, 85, 1)';
+                        
+                        this.chart.options.scales.r.ticks.color = '#6b5b73';
+                        this.chart.options.scales.r.grid.color = 'rgba(139, 115, 85, 0.3)';
+                        this.chart.options.scales.r.angleLines.color = 'rgba(139, 115, 85, 0.3)';
+                        this.chart.options.scales.r.pointLabels.color = '#5d4e6d';
+                    }
+                    
+                    this.chart.update('none'); // 不播放动画的更新
+                } catch (error) {
+                    console.error('更新图表主题失败:', error);
+                }
+            }
+        }
+
+        // 科纳米秘籍管理器（精简版）
+        class KonamiCodeManager {
+            constructor() {
+                this.konamiCode = [
+                    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+                    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+                    'KeyB', 'KeyA'
+                ];
+                this.userInput = [];
+                this.isActivated = false;
+                this.initKeyListener();
+            }
+
+            initKeyListener() {
+                document.addEventListener('keydown', (event) => {
+                    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+                        return;
+                    }
+
+                    const key = event.code;
+                    if (this.konamiCode.includes(key)) {
+                        this.userInput.push(key);
+                        if (this.userInput.length > this.konamiCode.length) {
+                            this.userInput.shift();
+                        }
+                        if (this.userInput.length === this.konamiCode.length && this.checkKonamiCode()) {
+                            this.activateEasterEgg();
+                        }
+                    } else {
+                        this.userInput = [];
+                    }
+                });
+            }
+
+            checkKonamiCode() {
+                for (let i = 0; i < this.konamiCode.length; i++) {
+                    if (this.userInput[i] !== this.konamiCode[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            activateEasterEgg() {
+                if (this.isActivated) return;
+                this.isActivated = true;
+                
+                // 保存游戏模式状态到localStorage
+                localStorage.setItem('retroMode', 'active');
+                
+                this.showActivationMessage();
+                setTimeout(() => {
+                    document.body.classList.add('retro-8bit-theme');
+                    this.addRetroElements();
+                }, 1000);
+                this.playRetroSound();
+            }
+
+            showActivationMessage() {
+                const message = document.createElement('div');
+                message.innerHTML = `
+                    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                                background: linear-gradient(45deg, #ff6b6b, #4ecdc4); color: white; padding: 2rem; 
+                                border-radius: 10px; font-family: 'Courier New', monospace; font-size: 1.5rem; 
+                                font-weight: bold; text-align: center; z-index: 10000; 
+                                box-shadow: 0 0 30px rgba(255, 107, 107, 0.5); animation: konami-bounce 0.6s ease-in-out;">
+                        🎮 KONAMI CODE ACTIVATED! 🎮<br>
+                        <span style="font-size: 1rem; margin-top: 0.5rem; display: block;">About Page Unlocked!</span>
+                    </div>`;
+                document.body.appendChild(message);
+                setTimeout(() => { if (message.parentNode) message.parentNode.removeChild(message); }, 3000);
+            }
+
+            addRetroElements() {
+                const retroBg = document.createElement('div');
+                retroBg.className = 'retro-background';
+                retroBg.innerHTML = '<div class="pixel-rain"></div><div class="retro-grid"></div>';
+                document.body.appendChild(retroBg);
+
+                const resetBtn = document.createElement('button');
+                resetBtn.innerHTML = '🎮 EXIT RETRO MODE';
+                resetBtn.className = 'retro-reset-btn';
+                resetBtn.addEventListener('click', () => this.deactivateEasterEgg());
+                document.body.appendChild(resetBtn);
+                
+                // 添加游戏入口按钮
+                const gameBtn = document.createElement('a');
+                gameBtn.href = 'snake-game.html';
+                gameBtn.innerHTML = '🐍 贪吃蛇游戏';
+                gameBtn.className = 'retro-game-btn';
+                document.body.appendChild(gameBtn);
+            }
+
+            deactivateEasterEgg() {
+                document.body.classList.remove('retro-8bit-theme');
+                
+                // 清除localStorage状态
+                localStorage.removeItem('retroMode');
+                
+                const retroBg = document.querySelector('.retro-background');
+                const resetBtn = document.querySelector('.retro-reset-btn');
+                const gameBtn = document.querySelector('.retro-game-btn');
+                if (retroBg) retroBg.remove();
+                if (resetBtn) resetBtn.remove();
+                if (gameBtn) gameBtn.remove();
+                this.isActivated = false;
+                this.userInput = [];
+            }
+
+            playRetroSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const frequencies = [262, 330, 392, 523];
+                    frequencies.forEach((freq, index) => {
+                        setTimeout(() => {
+                            const oscillator = audioContext.createOscillator();
+                            const gainNode = audioContext.createGain();
+                            oscillator.connect(gainNode);
+                            gainNode.connect(audioContext.destination);
+                            oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                            oscillator.type = 'square';
+                            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                            oscillator.start(audioContext.currentTime);
+                            oscillator.stop(audioContext.currentTime + 0.3);
+                        }, index * 100);
+                    });
+                } catch (error) {
+                    console.log('音频播放失败，但这不影响彩蛋效果:', error);
+                }
+            }
+        }
+
+        // 初始化功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化技能条动画
+            const skillAnimator = new SkillBarAnimator();
+            
+            // 初始化科纳米秘籍
+            const konamiManager = new KonamiCodeManager();
+            
+            // 检查是否应该保持游戏模式
+            if (localStorage.getItem('retroMode') === 'active') {
+                setTimeout(() => {
+                    konamiManager.isActivated = true;
+                    document.body.classList.add('retro-8bit-theme');
+                    konamiManager.addRetroElements();
+                }, 100);
+            }
+            
+            // 延迟初始化雷达图，确保Chart.js完全加载
+            setTimeout(() => {
+                try {
+                    console.log('尝试初始化雷达图...');
+                    const radarChart = new RadarChartManager();
+                    
+                    // 监听主题变化，更新雷达图
+                    const themeToggleBtn = document.getElementById('theme-toggle');
+                    if (themeToggleBtn) {
+                        themeToggleBtn.addEventListener('click', function() {
+                            setTimeout(() => {
+                                radarChart.updateChartTheme();
+                            }, 100);
+                        });
+                    }
+                    
+                    // 将radarChart存储到全局，方便调试和手动重试
+                    window.radarChart = radarChart;
+                    
+                    // 添加手动重试按钮
+                    window.retryRadarChart = function() {
+                        console.log('手动重试初始化雷达图...');
+                        new RadarChartManager();
+                    };
+                    
+                } catch (error) {
+                    console.error('雷达图初始化异常:', error);
+                    
+                    // 显示备用内容
+                    const container = document.querySelector('.radar-chart-container');
+                    if (container) {
+                        container.innerHTML = `
+                            <div style="text-align: center; padding: 3rem;">
+                                <h4 style="color: #5d4e6d; margin-bottom: 1rem;">雷达图暂时无法显示</h4>
+                                <p style="color: #6b5b73; margin-bottom: 1rem;">正在尝试加载图表库...</p>
+                                <button onclick="window.retryRadarChart()" 
+                                        style="background: #8b7355; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;">
+                                    重试加载
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
